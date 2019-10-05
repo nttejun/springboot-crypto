@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="testdata">
-Crypto text : ${testdata}
+Crypto text : ${encryptData}
 </div>
 <div id="result">
 </div>
@@ -25,13 +25,13 @@ Crypto text : ${testdata}
 <script>
 
     function getUsername(){
-        var DK = pbkdf2('passwd', 'salt', 1);
-        var usernameString = hexToString(hexXorAlgorithm("${testdata}", DK.toString()));
+        const DK = pbkdf2('passwd', 'salt', 1);
+        const usernameString = hexToString(hexXorAlgorithm("${encryptData}", DK.toString()));
         return usernameString;
     }
 
     function pbkdf2(password, salt, iteration) {
-        var key = CryptoJS.PBKDF2(password, salt, {
+        const key = CryptoJS.PBKDF2(password, salt, {
             iterations: iteration,
             keySize: 256 / 32,
             hasher: CryptoJS.algo.SHA256
@@ -40,7 +40,7 @@ Crypto text : ${testdata}
     }
 
     function hexXorAlgorithm(encryptData, pbkdf2Key) {
-        var res = "",
+        let res = "",
             encryptDataIndex = encryptData.length,
             pbkdf2KeyIndex = pbkdf2Key.length;
         while (encryptDataIndex-->0 && pbkdf2KeyIndex-->0)
@@ -49,8 +49,8 @@ Crypto text : ${testdata}
     }
 
     function hexToString(hex) {
-        var hexToString = '';
-        for (var i = 0; i < hex.length; i += 2) {
+        let hexToString = '';
+        for (let i = 0; i < hex.length; i += 2) {
             hexToString += String.fromCharCode(parseInt(hex.substr(i, 2), 16))
         }
         return decodeURIComponent(escape(hexToString));

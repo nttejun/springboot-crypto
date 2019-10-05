@@ -16,12 +16,18 @@ public class Crypto {
         return secretKeyFactory.generateSecret(pbeKeySpec).getEncoded();
     }
 
-    public byte[] encryptXorAlgorithm(byte[] encryptData, byte[] pbkdf2Key, int dataSize) {
-        byte[] decryptData = new byte[dataSize];
-        for (int i = 0; i < encryptData.length; i++) {
-            decryptData[i] = (byte) (encryptData[i] ^ pbkdf2Key[i]);
+    public byte[] addPadding(byte[] prePaddingData) {
+        byte[] paddingData = new byte[32];
+        System.arraycopy(prePaddingData, 0, paddingData, 0, prePaddingData.length);
+        return paddingData;
+    }
+
+    public byte[] xorAlgorithm(byte[] targetData, byte[] pbkdf2Key, int dataSize) {
+        byte[] xorResult = new byte[dataSize];
+        for (int i = 0; i < targetData.length; i++) {
+            xorResult[i] = (byte) (targetData[i] ^ pbkdf2Key[i]);
         }
-        return decryptData;
+        return xorResult;
     }
 
     public String convertByteToHex(byte[] dataSize) {
